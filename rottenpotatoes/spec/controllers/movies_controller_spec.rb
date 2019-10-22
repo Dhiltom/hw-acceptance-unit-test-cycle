@@ -2,7 +2,9 @@ require 'rails_helper'
 
 describe MoviesController do
 
+
     describe "#search_director" do
+
         context "When specified movie has a director" do
             
             it "should find movies with the same director" do
@@ -10,10 +12,10 @@ describe MoviesController do
             @movie_id="1234"
             @movie=double('fake_movie', :director => 'Tarantino')
             
-            expect(Movie).to receive(:find).with(@movie_id).and_return(@movie)
-            expect(@movie).to receive(:search_director)
+            expect(Movie).to receive(:find).and_return(@movie)
+            expect(Movie).to receive(:search_director)
             
-            get :search_director, :id => @movie_id
+            get :search_director, id:  @movie
             
             expect(response).to render_template(:search_director)
         end
@@ -79,7 +81,17 @@ describe MoviesController do
         expect(response).to redirect_to(movie_path(@movie))
     end
   end
-
+  
+  describe 'get all movies' do
+    it 'should render the index template' do
+      get :index
+      expect(response).to render_template('index')
+    end  
+    it 'should call the all ratings function from Movie' do
+      Movie.should_receive(:all_ratings).and_return( %w(G PG PG-13 NC-17 R));
+      get :index
+    end
+  end  
 
   describe "#new" do
     it "should render the new template" do

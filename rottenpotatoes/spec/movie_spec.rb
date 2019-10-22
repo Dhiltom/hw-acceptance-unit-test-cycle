@@ -13,4 +13,9 @@ describe Movie do
       expect(Movie.search_director(movie1.id)).to_not include(movie2)
     end
   end
+  describe 'Returns all ratings:' do
+        it 'returns all ratings which can be associated with a movie' do
+           expect(Movie.all_ratings).to match(%w(G PG PG-13 NC-17 R))
+        end
+   end
 end 
